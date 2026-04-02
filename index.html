@@ -1,461 +1,464 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2868
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww38200\viewh19640\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <base target="_top">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class', 
+      theme: {
+        extend: {
+          colors: {
+            intento: { blue: '#060242', yellow: '#D4B726' }
+          },
+          fontFamily: { sans: ['Ubuntu', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
 
-\f0\fs24 \cf0 <!DOCTYPE html>\
-<html lang="pt-BR">\
-<head>\
-  <meta charset="UTF-8">\
-  <base target="_top">\
-  \
-  <link rel="preconnect" href="https://fonts.googleapis.com">\
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">\
-  \
-  <link rel="icon" type="image/png" href="favicon.png">\
-  \
-  <script src="https://cdn.tailwindcss.com"></script>\
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>\
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>\
-  \
-  <script>\
-    tailwind.config = \{\
-      darkMode: 'class', \
-      theme: \{\
-        extend: \{\
-          colors: \{\
-            intento: \{ blue: '#060242', yellow: '#D4B726' \}\
-          \},\
-          fontFamily: \{ sans: ['Ubuntu', 'sans-serif'] \}\
-        \}\
-      \}\
-    \}\
-  </script>\
-\
-  <style>\
-    body \{ font-family: 'Ubuntu', sans-serif; background-color: #FFFFFF; color: #1e293b; -webkit-font-smoothing: antialiased; transition: background-color 0.3s ease, color 0.3s ease; \}\
-    .dark body \{ background-color: #0f172a; color: #f8fafc; \}\
-    h1, h2, h3, .font-serif \{ font-family: 'Ubuntu', sans-serif !important; \}\
-    .card \{ background: white; border-radius: 8px; border: 1px solid rgba(6, 2, 66, 0.12); padding: 1.5rem; box-shadow: 0 4px 12px rgba(6, 2, 66, 0.03); transition: background-color 0.3s ease, border-color 0.3s ease; \}\
-    .dark .card \{ background: #1e293b; border-color: #334155; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); \}\
-    .tab-active \{ border-bottom: 3px solid #060242; color: #060242; font-weight: 700; \}\
-    .dark .tab-active \{ border-bottom-color: #60a5fa; color: #60a5fa; \}\
-    .tab-inactive \{ color: #64748b; font-weight: 500; cursor: pointer; \}\
-    .dark .tab-inactive \{ color: #94a3b8; \}\
-    .tab-inactive:hover \{ color: #060242; \}\
-    .dark .tab-inactive:hover \{ color: #e2e8f0; \}\
-    .scroll-hide::-webkit-scrollbar \{ display: none; \}\
-    .scroll-hide \{ -ms-overflow-style: none; scrollbar-width: none; \}\
-    .task-checkbox:checked + div .task-title \{ text-decoration: line-through; opacity: 0.5; \}\
-    .task-checkbox:checked + div .task-time \{ opacity: 0.5; \}\
-\
-    @media print \{\
-      body \{ background-color: white !important; color: black !important; \}\
-      .no-print \{ display: none !important; \}\
-      .dark .card \{ background: white !important; border-color: #e2e8f0 !important; color: black !important; \}\
-      * \{ color: black !important; \}\
-    \}\
-  </style>\
-  \
-  <script>\
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) \{\
-      document.documentElement.classList.add('dark')\
-    \} else \{\
-      document.documentElement.classList.remove('dark')\
-    \}\
-  </script>\
-</head>\
-<body class="p-4 md:p-8">\
-\
-  <div class="max-w-6xl mx-auto" id="app">\
-    \
-    <div id="loader" class="flex flex-col items-center justify-center py-32 no-print">\
-      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-intento-blue dark:border-blue-400 mb-4"></div>\
-      <p class="text-slate-600 dark:text-slate-400 font-medium">Sincronizando Sistema...</p>\
-    </div>\
-\
-    <div id="report-header" class="hidden pb-8 mb-8 border-b-4 border-intento-blue">\
-      <div class="flex justify-between items-end">\
-        <div>\
-          <h1 class="text-3xl font-bold text-intento-blue" id="print-title">Relat\'f3rio Executivo</h1>\
-          <p class="text-slate-500 mt-1">Aluno(a): <span id="print-nome" class="font-bold text-slate-700"></span></p>\
-        </div>\
-        <div class="text-right"><img src="logo.png" alt="M\'e9todo Intento" class="h-8 object-contain"></div>\
-      </div>\
-    </div>\
-\
-    <div id="main-content" class="hidden">\
-      \
-      <div class="mb-8 flex flex-col md:flex-row md:justify-between items-center bg-white dark:bg-slate-800 p-6 rounded-xl border-l-4 border-intento-blue border border-slate-200 dark:border-slate-700 shadow-sm no-print transition-colors duration-300">\
-        <div class="flex flex-row items-center gap-5 text-left">\
-          <img src="simbolo-azul.png" alt="S\'edmbolo Intento" class="w-14 h-14 object-contain block dark:hidden">\
-          <img src="simbolo-branco.png" alt="S\'edmbolo Intento" class="w-14 h-14 object-contain hidden dark:block">\
-          <div class="flex flex-col">\
-            <h1 class="text-3xl md:text-4xl font-bold text-intento-blue dark:text-white leading-tight" id="lbl-nome">Carregando...</h1>\
-            <p class="text-slate-500 dark:text-slate-400 font-medium tracking-wide">Mentoria Intento</p>\
-          </div>\
-        </div>\
-        \
-        <div class="mt-6 md:mt-0 flex items-center gap-6">\
-          <div class="text-center md:text-right border-t md:border-t-0 md:border-l border-slate-200 dark:border-slate-600 pt-4 md:pt-0 md:pl-6">\
-            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Dias para o FGV/Insper</p>\
-            <p class="text-5xl font-extrabold text-intento-blue dark:text-blue-400"><span id="lbl-dias">--</span></p>\
-          </div>\
-          <button onclick="toggleTheme()" class="p-3 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition shadow-sm" title="Alternar Modo Escuro">\
-            <svg id="icon-moon" class="w-6 h-6 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>\
-            <svg id="icon-sun" class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>\
-          </button>\
-        </div>\
-      </div>\
-\
-      <div class="flex space-x-6 border-b border-slate-200 dark:border-slate-700 mb-8 overflow-x-auto whitespace-nowrap scroll-hide no-print font-sans">\
-        <div class="pb-3 tab-active transition" id="tab1" onclick="switchTab(1)">Vis\'e3o Geral</div>\
-        <div class="pb-3 tab-inactive transition" id="tab2" onclick="switchTab(2)">Acompanhamento Semanal</div>\
-        <div class="pb-3 tab-inactive transition" id="tab3" onclick="switchTab(3)">Plano de A\'e7\'e3o</div>\
-        <div class="pb-3 tab-inactive transition" id="tab4" onclick="switchTab(4)">Cronograma Base</div>\
-        <div class="pb-3 tab-inactive transition" id="tab5" onclick="switchTab(5)">Simulados</div>\
-      </div>\
-\
-      <div id="view1" class="space-y-6">\
-        <div class="flex justify-between items-end mb-4 no-print">\
-          <h2 class="text-2xl font-bold text-intento-blue dark:text-white">Dom\'ednio Atual</h2>\
-          <button onclick="openReportModal()" class="flex items-center gap-2 bg-intento-blue dark:bg-blue-600 hover:bg-[#040129] dark:hover:bg-blue-700 text-white text-sm font-bold py-2 px-4 rounded-lg transition shadow-md">\
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>\
-            Gerar Relat\'f3rio\
-          </button>\
-        </div>\
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">\
-          <div class="card text-center py-4 border-t-4 border-emerald-700 dark:border-emerald-500 flex flex-col items-center"><p class="text-xs text-emerald-800 dark:text-emerald-400 uppercase font-bold">Portugu\'eas</p><p class="text-3xl font-bold text-slate-800 dark:text-white mt-1" id="dom-bio">0%</p><div id="badge-bio"></div></div>\
-          <div class="card text-center py-4 border-t-4 border-purple-700 dark:border-purple-500 flex flex-col items-center"><p class="text-xs text-purple-800 dark:text-purple-400 uppercase font-bold">Hist\'f3ria</p><p class="text-3xl font-bold text-slate-800 dark:text-white mt-1" id="dom-qui">0%</p><div id="badge-qui"></div></div>\
-          <div class="card text-center py-4 border-t-4 border-blue-700 dark:border-blue-500 flex flex-col items-center"><p class="text-xs text-blue-800 dark:text-blue-400 uppercase font-bold">Geografia</p><p class="text-3xl font-bold text-slate-800 dark:text-white mt-1" id="dom-fis">0%</p><div id="badge-fis"></div></div>\
-          <div class="card text-center py-4 border-t-4 border-red-700 dark:border-red-500 flex flex-col items-center"><p class="text-xs text-red-800 dark:text-red-400 uppercase font-bold">Matem\'e1tica</p><p class="text-3xl font-bold text-slate-800 dark:text-white mt-1" id="dom-mat">0%</p><div id="badge-mat"></div></div>\
-        </div>\
-        <div class="grid grid-cols-1 gap-6 mb-6">\
-          <div class="card"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Progresso Atual por \'c1rea</h3><div class="relative h-64"><canvas id="chartProgressoArea"></canvas></div></div>\
-        </div>\
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 page-break-inside-avoid">\
-          <div class="card md:col-span-1"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Execu\'e7\'e3o (Horas vs Meta)</h3><canvas id="chartHorasMeta"></canvas></div>\
-          <div class="card md:col-span-1"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Dom\'ednio e Progresso</h3><canvas id="chartEvolucaoGeral"></canvas></div>\
-          <div class="card md:col-span-1"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Estilo de Vida</h3><canvas id="chartEstiloVida"></canvas></div>\
-        </div>\
-      </div>\
-\
-      <div id="view2" class="hidden space-y-8 no-print">\
-        <div class="card border-l-4 border-intento-blue dark:border-blue-500 mb-6">\
-          <div class="flex items-center gap-2 mb-3">\
-            <svg class="w-5 h-5 text-intento-blue dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>\
-            <h3 class="text-sm uppercase tracking-widest font-bold text-intento-blue dark:text-blue-400">Consist\'eancia (Semanas com Meta Batida)</h3>\
-          </div>\
-          <div class="flex flex-wrap gap-2" id="heatmap-container"></div>\
-        </div>\
-        <div id="msg-primeira-semana" class="hidden bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-intento-blue dark:text-blue-300 p-4 rounded-lg font-medium text-sm">\
-          Ainda n\'e3o h\'e1 dados da semana anterior para gerar comparativo.\
-        </div>\
-        <div><h2 class="text-2xl font-bold text-intento-blue dark:text-white mb-4">1. Aspectos Gerais</h2><div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="grid-geral"></div></div>\
-        <div><h2 class="text-2xl font-bold text-intento-blue dark:text-white mb-4">2. Estilo de Vida</h2><div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="grid-estilo"></div></div>\
-        <div>\
-          <h2 class="text-2xl font-bold text-intento-blue dark:text-white mb-4">3. Desempenho</h2>\
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4"><div id="col-bio" class="space-y-4"></div><div id="col-qui" class="space-y-4"></div><div id="col-fis" class="space-y-4"></div><div id="col-mat" class="space-y-4"></div></div>\
-        </div>\
-      </div>\
-\
-      <div id="view3" class="hidden space-y-6 no-print">\
-        <div class="mb-4">\
-          <h2 class="text-2xl font-bold text-intento-blue dark:text-white">Diretrizes do Mentor</h2>\
-          <p class="text-slate-500 dark:text-slate-400 text-sm">Atualizado com base no encontro do dia: <span id="plano-data" class="font-bold text-intento-blue dark:text-blue-400">--</span></p>\
-        </div>\
-        <div class="card border-t-4 border-intento-yellow dark:border-yellow-500 p-8 md:p-12 flex flex-col items-center justify-center text-center shadow-lg">\
-          <h3 class="text-sm uppercase tracking-widest font-bold text-intento-yellow dark:text-yellow-500 mb-4 flex items-center gap-2">Meta Principal</h3>\
-          <p class="text-3xl md:text-5xl font-extrabold text-intento-blue dark:text-white leading-tight" id="plano-meta">--</p>\
-        </div>\
-        <div class="card border-t-4 border-intento-blue dark:border-blue-500 mt-6 md:p-8">\
-          <h3 class="text-xl font-bold text-intento-blue dark:text-white mb-6 flex items-center gap-2">Plano de A\'e7\'e3o</h3>\
-          <div class="text-slate-700 dark:text-slate-300 leading-relaxed font-medium text-lg" id="plano-acao">--</div>\
-        </div>\
-      </div>\
-\
-      <div id="view4" class="hidden space-y-6">\
-        <h1 class="hidden print-only text-2xl font-bold text-center text-intento-blue mb-4 pb-2 border-b-4 border-intento-blue">Cronograma Oficial | M\'e9todo Intento</h1>\
-        <div class="mb-4 flex flex-col md:flex-row md:justify-between md:items-end gap-4 no-print">\
-          <div>\
-            <h2 class="text-2xl font-bold text-intento-blue dark:text-white">Cronograma Base</h2>\
-            <p class="text-slate-500 dark:text-slate-400 text-sm">Sua rotina t\'e1tica. Marque os itens ao concluir.</p>\
-          </div>\
-          <div class="flex gap-3">\
-            <button onclick="resetCheckboxes()" class="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-sm font-bold py-2 px-4 rounded-lg transition shadow-sm">\
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg> Zerar Rotina\
-            </button>\
-            <button onclick="printCronograma()" class="flex items-center justify-center gap-2 bg-intento-blue dark:bg-blue-600 hover:bg-[#040129] dark:hover:bg-blue-700 text-white text-sm font-bold py-2 px-5 rounded-lg transition shadow-md">\
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Imprimir\
-            </button>\
-          </div>\
-        </div>\
-        <div class="flex overflow-x-auto snap-x space-x-4 pb-4 scroll-hide w-full" id="kanban-container"></div>\
-      </div>\
-\
-      <div id="view5" class="hidden space-y-6 no-print">\
-        <div class="grid grid-cols-3 gap-4 mb-2">\
-          <div class="card text-center !bg-slate-50 dark:!bg-slate-900"><p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Simulados</p><p class="text-3xl font-bold text-intento-blue dark:text-white mt-1" id="kpi-sim-total">0</p></div>\
-          <div class="card text-center border-b-4 border-intento-yellow"><p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Acertos M\'e9dia</p><p class="text-4xl font-extrabold text-intento-yellow dark:text-yellow-500 mt-1" id="kpi-sim-acertos">0</p></div>\
-          <div class="card text-center border-b-4 border-intento-blue dark:border-blue-500"><p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Reda\'e7\'e3o M\'e9dia</p><p class="text-4xl font-extrabold text-intento-blue dark:text-blue-400 mt-1" id="kpi-sim-red">0</p></div>\
-        </div>\
-        <div class="grid grid-cols-4 gap-4 mb-6">\
-          <div class="card text-center py-3"><p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold">Linguagens</p><p class="text-2xl font-bold text-slate-800 dark:text-white mt-1" id="kpi-lg">0</p></div>\
-          <div class="card text-center py-3"><p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold">Humanas</p><p class="text-2xl font-bold text-slate-800 dark:text-white mt-1" id="kpi-ch">0</p></div>\
-          <div class="card text-center py-3"><p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold">Natureza</p><p class="text-2xl font-bold text-slate-800 dark:text-white mt-1" id="kpi-cn">0</p></div>\
-          <div class="card text-center py-3"><p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold">Matem\'e1tica</p><p class="text-2xl font-bold text-slate-800 dark:text-white mt-1" id="kpi-mat">0</p></div>\
-        </div>\
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">\
-          <div class="card col-span-1"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Tipos de Erros</h3><canvas id="chartErros"></canvas></div>\
-          <div class="card col-span-2"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Hist\'f3rico Temporal</h3><canvas id="chartHistoricoSimulados"></canvas></div>\
-        </div>\
-      </div>\
-    </div>\
-  </div>\
-\
-  <div id="modal-report" class="fixed inset-0 bg-intento-blue/90 dark:bg-slate-900/95 hidden items-center justify-center z-50 transition-opacity no-print">\
-    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-sm mx-4 transform transition-all border dark:border-slate-700">\
-      <h3 class="text-xl font-bold text-intento-blue dark:text-white mb-2">Gerar Relat\'f3rio PDF</h3>\
-      <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Selecione o formato do documento.</p>\
-      <div class="space-y-3">\
-        <button onclick="printReport('mensal')" class="w-full py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-intento-blue dark:text-white font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition">\uc0\u55357 \u56522  Resumo Mensal</button>\
-        <button onclick="printReport('ciclo')" class="w-full py-3 bg-intento-blue dark:bg-blue-600 text-intento-yellow dark:text-white rounded-lg font-bold hover:bg-[#040129] dark:hover:bg-blue-700 transition">\uc0\u55356 \u57286  Fechamento de Ciclo</button>\
-      </div>\
-      <div class="mt-6 text-center"><button onclick="closeReportModal()" class="text-sm text-slate-400 hover:text-slate-600 font-medium">Cancelar</button></div>\
-    </div>\
-  </div>\
-\
-  <script>\
-    Chart.register(ChartDataLabels); \
-    Chart.defaults.plugins.legend.position = 'bottom';\
-    Chart.defaults.plugins.legend.labels.usePointStyle = true;\
-    Chart.defaults.plugins.legend.labels.pointStyle = 'rectRounded';\
-    Chart.defaults.plugins.legend.labels.padding = 20;\
-    Chart.defaults.font.family = "'Ubuntu', sans-serif";\
-    Chart.defaults.set('plugins.datalabels', \{ display: false \}); \
-\
-    let globalData = \{\};\
-    let alunoNameKey = "Intento_";\
-\
-    function toggleTheme() \{\
-      const html = document.documentElement;\
-      if (html.classList.contains('dark')) \{ html.classList.remove('dark'); localStorage.theme = 'light'; \} \
-      else \{ html.classList.add('dark'); localStorage.theme = 'dark'; \}\
-    \}\
-\
-    function mostrarErro(mensagem) \{\
-      document.getElementById('loader').innerHTML = `\
-        <div class="text-center bg-white dark:bg-slate-800 p-12 rounded-xl shadow-xl border border-red-200 dark:border-red-900/50">\
-          <h2 class="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">Aten\'e7\'e3o Necess\'e1ria</h2>\
-          <p class="text-slate-600 dark:text-slate-300 font-medium">$\{mensagem\}</p>\
-        </div>`;\
-    \}\
-\
-    window.onload = () => \{\
-      calcularDiasFGV/Insper();\
-      const urlParams = new URLSearchParams(window.location.search);\
-      const idDoAluno = urlParams.get('id');\
-\
-      if (!idDoAluno) \{\
-        mostrarErro("Acesse utilizando o seu link pessoal de mentorado.");\
-        return;\
-      \}\
-\
-      // IMPORTANTE: N\'c3O ESQUE\'c7A DE COLAR O SEU ID DO AKfy DA MESTRE AQUI!!\
-      const ID_API_MESTRE = "AKfycbyEV55FJJrCL0AVRcsHH49gcl5qHdr6_vHknlsPbnRXmO6Q2rJhOGmAU5pLCKHZRcyd"; \
-      const linkDaAPI = `https://script.google.com/macros/s/$\{ID_API_MESTRE\}/exec?id=$\{idDoAluno\}`;\
-\
-      fetch(linkDaAPI)\
-        .then(resposta => resposta.json())\
-        .then(dados => \{\
-          if (dados.erro) \{\
-            mostrarErro(dados.erro); // Agora ele mostra o erro exato que a Planilha Mestre enviou!\
-            return;\
-          \}\
-          try \{\
-            initApp(dados); \
-          \} catch(erroInterno) \{\
-            mostrarErro("Erro ao montar os gr\'e1ficos: " + erroInterno.message);\
-            console.error(erroInterno);\
-          \}\
-        \})\
-        .catch(erro => \{\
-          mostrarErro("Falha de Comunica\'e7\'e3o com o Servidor. Verifique se o ID da Planilha Mestre est\'e1 correto no c\'f3digo.");\
-          console.error(erro);\
-        \});\
-    \};\
-\
-    function calcularDiasFGV/Insper() \{\
-      const d = new Date('2026-11-01T00:00:00');\
-      const diff = Math.ceil((d - new Date()) / (1000 * 60 * 60 * 24));\
-      document.getElementById('lbl-dias').innerText = diff > 0 ? diff : 0;\
-    \}\
-\
-    function switchTab(tabId) \{\
-      [1, 2, 3, 4, 5].forEach(id => \{\
-        document.getElementById(`tab$\{id\}`).className = 'pb-3 tab-inactive transition no-print';\
-        document.getElementById(`view$\{id\}`).classList.add('hidden');\
-      \});\
-      document.getElementById(`tab$\{tabId\}`).className = 'pb-3 tab-active transition no-print';\
-      document.getElementById(`view$\{tabId\}`).classList.remove('hidden');\
-    \}\
-\
-    function openReportModal() \{ document.getElementById('modal-report').classList.remove('hidden'); document.getElementById('modal-report').classList.add('flex'); \}\
-    function closeReportModal() \{ document.getElementById('modal-report').classList.add('hidden'); document.getElementById('modal-report').classList.remove('flex'); \}\
-    function printCronograma() \{ /*... mantido ...*/ window.print(); \}\
-    function printReport(type) \{ /*... mantido ...*/ window.print(); \}\
-\
-    function getBadgeHtml(val) \{\
-      if (val >= 90) return `<span class="inline-flex items-center gap-1 px-3 py-1 bg-intento-blue dark:bg-blue-900 text-intento-yellow dark:text-yellow-400 text-[10px] uppercase tracking-widest font-bold rounded-full mt-2 shadow-sm">\uc0\u9968 \u65039  Mestre</span>`;\
-      if (val >= 80) return `<span class="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 text-[10px] uppercase tracking-widest font-bold rounded-full mt-2">\uc0\u55357 \u56534  Proficiente</span>`;\
-      if (val >= 70) return `<span class="inline-flex items-center gap-1 px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-[10px] uppercase tracking-widest font-bold rounded-full mt-2">\uc0\u55356 \u57137  Fundamento</span>`;\
-      return '';\
-    \}\
-\
-    function getTaskStyle(text) \{\
-      let t = (text || "").toLowerCase();\
-      if (t.includes('codifica\'e7\'e3o') || t.includes('priming')) return \{ bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'border-blue-200 dark:border-blue-800/50', textTime: 'text-blue-700 dark:text-blue-400', textTitle: 'text-blue-900 dark:text-blue-100' \};\
-      if (t.includes('revis\'e3o')) return \{ bg: 'bg-emerald-50 dark:bg-emerald-900/20', border: 'border-emerald-200 dark:border-emerald-800/50', textTime: 'text-emerald-700 dark:text-emerald-400', textTitle: 'text-emerald-900 dark:text-emerald-100' \};\
-      if (t.includes('simulado')) return \{ bg: 'bg-red-50 dark:bg-red-900/20', border: 'border-red-200 dark:border-red-800/50', textTime: 'text-red-700 dark:text-red-400', textTitle: 'text-red-900 dark:text-red-100' \};\
-      if (t.includes('atividade Geografia')) return \{ bg: 'bg-yellow-50 dark:bg-yellow-900/20', border: 'border-yellow-300 dark:border-yellow-800/50', textTime: 'text-yellow-800 dark:text-yellow-400', textTitle: 'text-yellow-900 dark:text-yellow-100' \};\
-      if (t.includes('trabalho')) return \{ bg: 'bg-slate-800 dark:bg-slate-700', border: 'border-slate-900 dark:border-slate-600', textTime: 'text-slate-400 dark:text-slate-300', textTitle: 'text-white dark:text-white' \};\
-      if (t.includes('sono') || t.includes('rotina noturna')) return \{ bg: 'bg-purple-50 dark:bg-purple-900/20', border: 'border-purple-200 dark:border-purple-800/50', textTime: 'text-purple-700 dark:text-purple-400', textTitle: 'text-purple-900 dark:text-purple-100' \};\
-      return \{ bg: 'bg-slate-100 dark:bg-slate-800', border: 'border-slate-300 dark:border-slate-700', textTime: 'text-slate-500 dark:text-slate-400', textTitle: 'text-slate-700 dark:text-slate-200' \};\
-    \}\
-\
-    function saveTaskStatus(checkbox) \{ localStorage.setItem(alunoNameKey + checkbox.getAttribute('data-id'), checkbox.checked); \}\
-\
-    function resetCheckboxes() \{\
-      if(confirm("Zerar as atividades e iniciar uma nova semana?")) \{\
-        const checkboxes = document.querySelectorAll('.task-checkbox');\
-        checkboxes.forEach(chk => \{ chk.checked = false; localStorage.removeItem(alunoNameKey + chk.getAttribute('data-id')); \});\
-      \}\
-    \}\
-\
-    // Fun\'e7\'e3o de parse protegida (Safe Navigation)\
-    const p = (str) => parseFloat((str || '').toString().replace('%','').replace(',','.')) || 0;\
-\
-    function renderCards(containerId, dataArray, isFirstWeek) \{\
-      if(!dataArray || !Array.isArray(dataArray)) return;\
-      const container = document.getElementById(containerId);\
-      let html = '';\
-      const bCol = \{ 'emerald': 'border-emerald-700 dark:border-emerald-500', 'purple': 'border-purple-700 dark:border-purple-500', 'blue': 'border-blue-700 dark:border-blue-500', 'red': 'border-red-700 dark:border-red-500', 'slate': 'border-slate-300 dark:border-slate-600' \};\
-      const tCol = \{ 'emerald': 'text-emerald-800 dark:text-emerald-400', 'purple': 'text-purple-800 dark:text-purple-400', 'blue': 'text-blue-800 dark:text-blue-400', 'red': 'text-red-800 dark:text-red-400', 'slate': 'text-slate-600 dark:text-slate-400' \};\
-\
-      dataArray.forEach(item => \{\
-        let diff = p(item.curr) - p(item.prev);\
-        let valCol = "text-slate-800 dark:text-white"; let arr = "";\
-        if (!isFirstWeek && diff !== 0) \{\
-          let isPos = diff > 0;\
-          valCol = (item.invertColors ? !isPos : isPos) ? "text-emerald-700 dark:text-emerald-400" : "text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/30 px-1 rounded";\
-          arr = isPos ? "\uc0\u9650 " : "\u9660 ";\
-        \}\
-        let disp = isFirstWeek ? (item.curr || '0') : `<span class="text-sm text-slate-400 font-normal mr-1">$\{item.prev || '0'\} \uc0\u10132 </span> $\{item.curr || '0'\} <span class="text-xs ml-1">$\{arr\}</span>`;\
-        let tm = item.theme || 'slate';\
-        html += `<div class="card py-3 px-4 flex flex-col justify-center border-l-4 $\{bCol[tm]\}"><span class="text-xs font-bold $\{tCol[tm]\} uppercase mb-1">$\{item.name || ''\}</span><span class="text-2xl font-bold $\{valCol\}">$\{disp\}</span></div>`;\
-      \});\
-      container.innerHTML = html;\
-    \}\
-\
-    function initApp(dados) \{\
-      globalData = dados;\
-      \
-      // BLINDAGEM 1: Se o nome n\'e3o existir, n\'e3o quebra o c\'f3digo\
-      const nomeAluno = dados?.aluno?.nome || 'Aluno Intento';\
-      alunoNameKey = "Intento_" + nomeAluno.replace(/\\s+/g, '_') + "_";\
-      \
-      document.title = nomeAluno + " | Mentoria Intento";\
-      document.getElementById('print-nome').innerText = nomeAluno;\
-      document.getElementById('lbl-nome').innerText = nomeAluno;\
-      \
-      document.getElementById('loader').classList.add('hidden');\
-      document.getElementById('main-content').classList.remove('hidden');\
-\
-      // ABA 1\
-      const snapshot = dados?.snapshot || \{dom:[0,0,0,0], prog:[0,0,0,0]\};\
-      const domArr = snapshot.dom || [0,0,0,0];\
-      document.getElementById('dom-bio').innerText = domArr[0] + "%";\
-      document.getElementById('badge-bio').innerHTML = getBadgeHtml(domArr[0]);\
-      document.getElementById('dom-qui').innerText = domArr[1] + "%";\
-      document.getElementById('badge-qui').innerHTML = getBadgeHtml(domArr[1]);\
-      document.getElementById('dom-fis').innerText = domArr[2] + "%";\
-      document.getElementById('badge-fis').innerHTML = getBadgeHtml(domArr[2]);\
-      document.getElementById('dom-mat').innerText = domArr[3] + "%";\
-      document.getElementById('badge-mat').innerHTML = getBadgeHtml(domArr[3]);\
-\
-      const mensal = dados?.mensal || \{labels:[], meta:[], horas:[], domTot:[], progTot:[], estresse:[], ansiedade:[], motivacao:[], sono:[]\};\
-      new Chart(document.getElementById('chartHorasMeta'), \{ data: \{ labels: mensal.labels || [], datasets: [ \{ type: 'line', label: 'Meta', data: mensal.meta || [], borderColor: '#64748b', borderWidth: 3, tension: 0.1, yAxisID: 'y', pointBackgroundColor: '#FFFFFF', pointRadius: 4 \}, \{ type: 'bar', label: 'Horas', data: mensal.horas || [], backgroundColor: '#D4B726', borderRadius: 4, yAxisID: 'y' \} ] \}, options: \{ scales: \{ y: \{ beginAtZero: true, grid: \{ color: 'rgba(150, 150, 150, 0.1)' \} \}, x: \{ grid: \{ display: false \} \} \}, plugins: \{ datalabels: \{ display: true, align: 'top', font: \{ weight: 'bold' \} \} \} \} \});\
-      new Chart(document.getElementById('chartEvolucaoGeral'), \{ data: \{ labels: mensal.labels || [], datasets: [ \{ type: 'line', label: 'Dom\'ednio', data: mensal.domTot || [], borderColor: '#3b82f6', backgroundColor: '#3b82f6', tension: 0.3, yAxisID: 'y', pointBackgroundColor: '#FFFFFF', pointRadius: 4 \}, \{ type: 'bar', label: 'Progresso', data: mensal.progTot || [], backgroundColor: 'rgba(100, 116, 139, 0.2)', yAxisID: 'y1', borderRadius: 4 \} ] \}, options: \{ scales: \{ y: \{ type: 'linear', position: 'left', min: 0, max: 100, grid: \{ color: 'rgba(150, 150, 150, 0.1)' \} \}, y1: \{ type: 'linear', position: 'right', min: 0, grid: \{ drawOnChartArea: false \} \}, x: \{ grid: \{ display: false \} \} \}, plugins: \{ datalabels: \{ display: true, align: 'top', font: \{ weight: 'bold' \} \} \} \} \});\
-      new Chart(document.getElementById('chartEstiloVida'), \{ type: 'line', data: \{ labels: mensal.labels || [], datasets: [ \{ label: 'Estresse', data: mensal.estresse || [], borderColor: '#ef4444', backgroundColor: '#ef4444', tension: 0.3, pointBackgroundColor: '#FFFFFF', pointRadius: 4 \}, \{ label: 'Ansiedade', data: mensal.ansiedade || [], borderColor: '#f97316', backgroundColor: '#f97316', tension: 0.3, pointBackgroundColor: '#FFFFFF', pointRadius: 4 \}, \{ label: 'Motiva\'e7\'e3o', data: mensal.motivacao || [], borderColor: '#3b82f6', backgroundColor: '#3b82f6', tension: 0.3, pointBackgroundColor: '#FFFFFF', pointRadius: 4 \}, \{ label: 'Sono', data: mensal.sono || [], borderColor: '#8b5cf6', backgroundColor: '#8b5cf6', tension: 0.3, pointBackgroundColor: '#FFFFFF', pointRadius: 4 \} ] \}, options: \{ scales: \{ y: \{ min: 0, max: 5, ticks: \{ stepSize: 1 \}, grid: \{ color: 'rgba(150, 150, 150, 0.1)' \} \}, x: \{ grid: \{ display: false \} \} \} \} \});\
-      new Chart(document.getElementById('chartProgressoArea'), \{ type: 'bar', data: \{ labels: ['Portugu\'eas', 'Hist\'f3ria', 'Geografia', 'Matem\'e1tica'], datasets: [\{ label: 'Progresso (%)', data: snapshot.prog || [0,0,0,0], backgroundColor: ['#10b981', '#a855f7', '#3b82f6', '#ef4444'], borderRadius: 4 \}] \}, options: \{ indexAxis: 'y', maintainAspectRatio: false, plugins: \{ legend: \{ display: false \}, datalabels: \{ display: true, anchor: 'end', align: 'right', font: \{ weight: 'bold' \} \} \}, scales: \{ x: \{ beginAtZero: true, max: 100, grid: \{ color: 'rgba(150, 150, 150, 0.1)' \} \}, y: \{ grid: \{ display: false \} \} \} \} \});\
-\
-      // ABA 2\
-      const semanal = dados?.semanal || \{\};\
-      const isFirst = semanal.isFirstWeek || false;\
-      if (isFirst) document.getElementById('msg-primeira-semana').classList.remove('hidden');\
-      \
-      let heatHtml = '';\
-      const streak = semanal.streak || [];\
-      streak.forEach(hit => \{ heatHtml += `<div class="w-7 h-7 rounded $\{hit ? 'bg-intento-blue dark:bg-blue-600' : 'bg-slate-200 dark:bg-slate-700'\} shadow-sm"></div>`; \});\
-      for(let i=0; i<3; i++) \{ heatHtml += `<div class="w-7 h-7 rounded border-2 border-slate-200 dark:border-slate-700 bg-transparent"></div>`; \}\
-      document.getElementById('heatmap-container').innerHTML = heatHtml;\
-\
-      renderCards('grid-geral', semanal.geral || [], isFirst);\
-      renderCards('grid-estilo', semanal.estilo || [], isFirst);\
-      const desemp = semanal.desempenho || [];\
-      renderCards('col-bio', desemp.slice(0, 2), isFirst);\
-      renderCards('col-qui', desemp.slice(2, 4), isFirst);\
-      renderCards('col-fis', desemp.slice(4, 6), isFirst);\
-      renderCards('col-mat', desemp.slice(6, 8), isFirst);\
-\
-      // ABA 3\
-      const plano = dados?.plano || \{ data: '--', meta: '--', acao: [] \};\
-      document.getElementById('plano-data').innerText = plano.data || '--';\
-      document.getElementById('plano-meta').innerText = plano.meta || '--';\
-      let acoesHtml = '<ol class="list-decimal pl-6 space-y-4 marker:text-intento-blue dark:marker:text-blue-400 marker:font-bold">';\
-      (plano.acao || []).forEach(acao => \{ acoesHtml += `<li class="whitespace-pre-wrap text-slate-700 dark:text-slate-300">$\{acao\}</li>`; \});\
-      acoesHtml += '</ol>';\
-      document.getElementById('plano-acao').innerHTML = acoesHtml;\
-\
-      // ABA 4\
-      let kContainer = document.getElementById('kanban-container');\
-      let kHtml = '';\
-      const rotina = dados?.rotina || \{\};\
-      const rotinaDias = dados?.rotinaDias || [];\
-      rotinaDias.forEach((dia, dayIndex) => \{\
-        let atividades = rotina[dia] || [];\
-        let bHtml = '';\
-        if(atividades.length > 0) \{\
-          atividades.forEach((att, attIndex) => \{\
-            let s = getTaskStyle(att.atividade);\
-            let tId = `t_$\{dayIndex\}_$\{attIndex\}`;\
-            let chk = localStorage.getItem(alunoNameKey + tId) === 'true' ? 'checked' : '';\
-            bHtml += `<label class="$\{s.bg\} border $\{s.border\} p-3 rounded-lg mb-2 shadow-sm transition hover:shadow-md cursor-pointer flex items-start gap-3 print-crono-task"><input type="checkbox" class="mt-1 task-checkbox w-4 h-4 text-intento-blue rounded border-slate-300 dark:border-slate-600 dark:bg-slate-700 no-print" data-id="$\{tId\}" onchange="saveTaskStatus(this)" $\{chk\}><div class="flex-1"><p class="text-xs $\{s.textTime\} font-bold mb-1 task-time print-crono-text">$\{att.hora || ''\}</p><p class="text-sm $\{s.textTitle\} font-medium leading-tight task-title print-crono-text">$\{att.atividade || ''\}</p></div></label>`;\
-          \});\
-        \} else \{ bHtml = `<p class="text-sm text-slate-400 dark:text-slate-500 italic mt-4 text-center">Dia Livre</p>`; \}\
-        kHtml += `<div class="snap-center min-w-[270px] max-w-[270px] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 flex flex-col shadow-sm print-crono-day"><h3 class="text-center font-bold text-intento-blue dark:text-blue-400 uppercase mb-4 pb-2 tracking-wide">$\{dia\}</h3><div class="flex-1 overflow-y-auto pr-2 scroll-hide">$\{bHtml\}</div></div>`;\
-      \});\
-      kContainer.innerHTML = kHtml;\
-\
-      // ABA 5\
-      const simKpi = dados?.sim?.kpi || \{ realizados:0, medAcertos:0, medRedacao:0, medLG:0, medCH:0, medCN:0, medMAT:0, erros:\{atencao:0, inter:0, rec:0, lac:0\} \};\
-      document.getElementById('kpi-sim-total').innerText = simKpi.realizados || 0;\
-      document.getElementById('kpi-sim-acertos').innerText = simKpi.medAcertos || 0;\
-      document.getElementById('kpi-sim-red').innerText = simKpi.medRedacao || 0;\
-      document.getElementById('kpi-lg').innerText = simKpi.medLG || 0;\
-      document.getElementById('kpi-ch').innerText = simKpi.medCH || 0;\
-      document.getElementById('kpi-cn').innerText = simKpi.medCN || 0;\
-      document.getElementById('kpi-mat').innerText = simKpi.medMAT || 0;\
-      \
-      const erros = simKpi.erros || \{atencao:0, inter:0, rec:0, lac:0\};\
-      new Chart(document.getElementById('chartErros'), \{ type: 'doughnut', data: \{ labels: ['Aten\'e7\'e3o', 'Interpreta\'e7\'e3o', 'Recorda\'e7\'e3o', 'Lacuna'], datasets: [\{ data: [erros.atencao, erros.inter, erros.rec, erros.lac], backgroundColor: ['#D4B726', '#3b82f6', '#8b5cf6', '#ef4444'], borderWidth: 0 \}] \}, options: \{ cutout: '65%', plugins: \{ datalabels: \{ color: '#fff', font: \{ weight: 'bold' \}, display: true \} \} \} \});\
-      \
-      const hist = dados?.sim?.hist || \{labels:[], lg:[], ch:[], cn:[], mat:[]\};\
-      new Chart(document.getElementById('chartHistoricoSimulados'), \{ type: 'line', data: \{ labels: hist.labels || [], datasets: [ \{ label: 'LG', data: hist.lg || [], borderColor: '#0ea5e9', backgroundColor: '#0ea5e9', tension: 0.2, pointBackgroundColor: '#FFFFFF', pointRadius: 4 \}, \{ label: 'CH', data: hist.ch || [], borderColor: '#f97316', backgroundColor: '#f97316', tension: 0.2, pointBackgroundColor: '#FFFFFF', pointRadius: 4 \}, \{ label: 'CN', data: hist.cn || [], borderColor: '#10b981', backgroundColor: '#10b981', tension: 0.2, pointBackgroundColor: '#FFFFFF', pointRadius: 4 \}, \{ label: 'MAT', data: hist.mat || [], borderColor: '#ef4444', backgroundColor: '#ef4444', tension: 0.2, pointBackgroundColor: '#FFFFFF', pointRadius: 4 \} ] \}, options: \{ scales: \{ y: \{ grid: \{ color: 'rgba(150, 150, 150, 0.1)' \} \}, x: \{ grid: \{ display: false \} \} \} \} \});\
-    \}\
-  </script>\
-</body>\
-</html>}
+  <style>
+    body { font-family: 'Ubuntu', sans-serif; background-color: #FFFFFF; color: #1e293b; -webkit-font-smoothing: antialiased; transition: background-color 0.3s ease, color 0.3s ease; }
+    .dark body { background-color: #0f172a; color: #f8fafc; }
+    h1, h2, h3, .font-serif { font-family: 'Ubuntu', sans-serif !important; }
+    .card { background: white; border-radius: 8px; border: 1px solid rgba(6, 2, 66, 0.12); padding: 1.5rem; box-shadow: 0 4px 12px rgba(6, 2, 66, 0.03); transition: background-color 0.3s ease, border-color 0.3s ease; }
+    .dark .card { background: #1e293b; border-color: #334155; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+    .tab-active { border-bottom: 3px solid #060242; color: #060242; font-weight: 700; }
+    .dark .tab-active { border-bottom-color: #60a5fa; color: #60a5fa; }
+    .tab-inactive { color: #64748b; font-weight: 500; cursor: pointer; }
+    .dark .tab-inactive { color: #94a3b8; }
+    .tab-inactive:hover { color: #060242; }
+    .dark .tab-inactive:hover { color: #e2e8f0; }
+    .scroll-hide::-webkit-scrollbar { display: none; }
+    .scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    .task-checkbox:checked + div .task-title { text-decoration: line-through; opacity: 0.5; }
+    .task-checkbox:checked + div .task-time { opacity: 0.5; }
+
+    @media print {
+      body { background-color: white !important; color: black !important; }
+      .no-print { display: none !important; }
+      .dark .card { background: white !important; border-color: #e2e8f0 !important; color: black !important; }
+      * { color: black !important; }
+    }
+  </style>
+  
+  <script>
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  </script>
+</head>
+<body class="p-4 md:p-8">
+
+  <div class="max-w-6xl mx-auto" id="app">
+    
+    <div id="loader" class="flex flex-col items-center justify-center py-32 no-print">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-intento-blue dark:border-blue-400 mb-4"></div>
+      <p class="text-slate-600 dark:text-slate-400 font-medium">Sincronizando Sistema...</p>
+    </div>
+
+    <div id="report-header" class="hidden pb-8 mb-8 border-b-4 border-intento-blue">
+      <div class="flex justify-between items-end">
+        <div>
+          <h1 class="text-3xl font-bold text-intento-blue" id="print-title">Relatório Executivo</h1>
+          <p class="text-slate-500 mt-1">Aluno(a): <span id="print-nome" class="font-bold text-slate-700"></span></p>
+        </div>
+        <div class="text-right"><img src="logo.png" alt="Método Intento" class="h-8 object-contain"></div>
+      </div>
+    </div>
+
+    <div id="main-content" class="hidden">
+      
+      <div class="mb-8 flex flex-col md:flex-row md:justify-between items-center bg-white dark:bg-slate-800 p-6 rounded-xl border-l-4 border-intento-blue border border-slate-200 dark:border-slate-700 shadow-sm no-print transition-colors duration-300">
+        <div class="flex flex-row items-center gap-5 text-left">
+          <img src="simbolo-azul.png" alt="Símbolo Intento" class="w-14 h-14 object-contain block dark:hidden">
+          <img src="simbolo-branco.png" alt="Símbolo Intento" class="w-14 h-14 object-contain hidden dark:block">
+          <div class="flex flex-col">
+            <h1 class="text-3xl md:text-4xl font-bold text-intento-blue dark:text-white leading-tight" id="lbl-nome">Carregando...</h1>
+            <p class="text-slate-500 dark:text-slate-400 font-medium tracking-wide">Mentoria Intento</p>
+          </div>
+        </div>
+        
+        <div class="mt-6 md:mt-0 flex items-center gap-6">
+          <div class="text-center md:text-right border-t md:border-t-0 md:border-l border-slate-200 dark:border-slate-600 pt-4 md:pt-0 md:pl-6">
+            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Dias para o Insper/FGV</p>
+            <p class="text-5xl font-extrabold text-intento-blue dark:text-blue-400"><span id="lbl-dias">--</span></p>
+          </div>
+          <button onclick="toggleTheme()" class="p-3 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition shadow-sm" title="Alternar Modo Escuro">
+            <svg id="icon-moon" class="w-6 h-6 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            <svg id="icon-sun" class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex space-x-6 border-b border-slate-200 dark:border-slate-700 mb-8 overflow-x-auto whitespace-nowrap scroll-hide no-print font-sans">
+        <div class="pb-3 tab-active transition" id="tab1" onclick="switchTab(1)">Visão Geral</div>
+        <div class="pb-3 tab-inactive transition" id="tab2" onclick="switchTab(2)">Acompanhamento Semanal</div>
+        <div class="pb-3 tab-inactive transition" id="tab3" onclick="switchTab(3)">Plano de Ação</div>
+        <div class="pb-3 tab-inactive transition" id="tab4" onclick="switchTab(4)">Cronograma Base</div>
+        <div class="pb-3 tab-inactive transition" id="tab5" onclick="switchTab(5)">Simulados</div>
+      </div>
+
+      <div id="view1" class="space-y-6">
+        <div class="flex justify-between items-end mb-4 no-print">
+          <h2 class="text-2xl font-bold text-intento-blue dark:text-white">Domínio Atual</h2>
+          <button onclick="openReportModal()" class="flex items-center gap-2 bg-intento-blue dark:bg-blue-600 hover:bg-[#040129] dark:hover:bg-blue-700 text-white text-sm font-bold py-2 px-4 rounded-lg transition shadow-md">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            Gerar Relatório
+          </button>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div class="card text-center py-4 border-t-4 border-emerald-700 dark:border-emerald-500 flex flex-col items-center"><p class="text-xs text-emerald-800 dark:text-emerald-400 uppercase font-bold">Português</p><p class="text-3xl font-bold text-slate-800 dark:text-white mt-1" id="dom-bio">0%</p><div id="badge-bio"></div></div>
+          <div class="card text-center py-4 border-t-4 border-purple-700 dark:border-purple-500 flex flex-col items-center"><p class="text-xs text-purple-800 dark:text-purple-400 uppercase font-bold">História</p><p class="text-3xl font-bold text-slate-800 dark:text-white mt-1" id="dom-qui">0%</p><div id="badge-qui"></div></div>
+          <div class="card text-center py-4 border-t-4 border-blue-700 dark:border-blue-500 flex flex-col items-center"><p class="text-xs text-blue-800 dark:text-blue-400 uppercase font-bold">Geografia</p><p class="text-3xl font-bold text-slate-800 dark:text-white mt-1" id="dom-fis">0%</p><div id="badge-fis"></div></div>
+          <div class="card text-center py-4 border-t-4 border-red-700 dark:border-red-500 flex flex-col items-center"><p class="text-xs text-red-800 dark:text-red-400 uppercase font-bold">Matemática</p><p class="text-3xl font-bold text-slate-800 dark:text-white mt-1" id="dom-mat">0%</p><div id="badge-mat"></div></div>
+        </div>
+        <div class="grid grid-cols-1 gap-6 mb-6">
+          <div class="card"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Progresso Atual por Área</h3><div class="relative h-64"><canvas id="chartProgressoArea"></canvas></div></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 page-break-inside-avoid">
+          <div class="card md:col-span-1"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Execução (Horas vs Meta)</h3><canvas id="chartHorasMeta"></canvas></div>
+          <div class="card md:col-span-1"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Domínio e Progresso</h3><canvas id="chartEvolucaoGeral"></canvas></div>
+          <div class="card md:col-span-1"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Estilo de Vida</h3><canvas id="chartEstiloVida"></canvas></div>
+        </div>
+      </div>
+
+      <div id="view2" class="hidden space-y-8 no-print">
+        <div class="card border-l-4 border-intento-blue dark:border-blue-500 mb-6">
+          <div class="flex items-center gap-2 mb-3">
+            <svg class="w-5 h-5 text-intento-blue dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            <h3 class="text-sm uppercase tracking-widest font-bold text-intento-blue dark:text-blue-400">Consistência (Semanas com Meta Batida)</h3>
+          </div>
+          <div class="flex flex-wrap gap-2" id="heatmap-container"></div>
+        </div>
+        <div id="msg-primeira-semana" class="hidden bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-intento-blue dark:text-blue-300 p-4 rounded-lg font-medium text-sm">
+          Ainda não há dados da semana anterior para gerar comparativo.
+        </div>
+        <div><h2 class="text-2xl font-bold text-intento-blue dark:text-white mb-4">1. Aspectos Gerais</h2><div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="grid-geral"></div></div>
+        <div><h2 class="text-2xl font-bold text-intento-blue dark:text-white mb-4">2. Estilo de Vida</h2><div class="grid grid-cols-1 md:grid-cols-4 gap-4" id="grid-estilo"></div></div>
+        <div>
+          <h2 class="text-2xl font-bold text-intento-blue dark:text-white mb-4">3. Desempenho</h2>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4"><div id="col-bio" class="space-y-4"></div><div id="col-qui" class="space-y-4"></div><div id="col-fis" class="space-y-4"></div><div id="col-mat" class="space-y-4"></div></div>
+        </div>
+      </div>
+
+      <div id="view3" class="hidden space-y-6 no-print">
+        <div class="mb-4">
+          <h2 class="text-2xl font-bold text-intento-blue dark:text-white">Diretrizes do Mentor</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">Atualizado com base no encontro do dia: <span id="plano-data" class="font-bold text-intento-blue dark:text-blue-400">--</span></p>
+        </div>
+        <div class="card border-t-4 border-intento-yellow dark:border-yellow-500 p-8 md:p-12 flex flex-col items-center justify-center text-center shadow-lg">
+          <h3 class="text-sm uppercase tracking-widest font-bold text-intento-yellow dark:text-yellow-500 mb-4 flex items-center gap-2">Meta Principal</h3>
+          <p class="text-3xl md:text-5xl font-extrabold text-intento-blue dark:text-white leading-tight" id="plano-meta">--</p>
+        </div>
+        <div class="card border-t-4 border-intento-blue dark:border-blue-500 mt-6 md:p-8">
+          <h3 class="text-xl font-bold text-intento-blue dark:text-white mb-6 flex items-center gap-2">Plano de Ação</h3>
+          <div class="text-slate-700 dark:text-slate-300 leading-relaxed font-medium text-lg" id="plano-acao">--</div>
+        </div>
+      </div>
+
+      <div id="view4" class="hidden space-y-6">
+        <h1 class="hidden print-only text-2xl font-bold text-center text-intento-blue mb-4 pb-2 border-b-4 border-intento-blue">Cronograma Oficial | Método Intento</h1>
+        <div class="mb-4 flex flex-col md:flex-row md:justify-between md:items-end gap-4 no-print">
+          <div>
+            <h2 class="text-2xl font-bold text-intento-blue dark:text-white">Cronograma Base</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">Sua rotina tática. Marque os itens ao concluir.</p>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="resetCheckboxes()" class="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-sm font-bold py-2 px-4 rounded-lg transition shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg Zerar Rotina
+            </button>
+            <button onclick="printCronograma()" class="flex items-center justify-center gap-2 bg-intento-blue dark:bg-blue-600 hover:bg-[#040129] dark:hover:bg-blue-700 text-white text-sm font-bold py-2 px-5 rounded-lg transition shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Imprimir
+            </button>
+          </div>
+        </div>
+        <div class="flex overflow-x-auto snap-x space-x-4 pb-4 scroll-hide w-full" id="kanban-container"></div>
+      </div>
+
+      <div id="view5" class="hidden space-y-6 no-print">
+        <div class="grid grid-cols-3 gap-4 mb-2">
+          <div class="card text-center !bg-slate-50 dark:!bg-slate-900"><p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Simulados</p><p class="text-3xl font-bold text-intento-blue dark:text-white mt-1" id="kpi-sim-total">0</p></div>
+          <div class="card text-center border-b-4 border-intento-yellow"><p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Acertos Média</p><p class="text-4xl font-extrabold text-intento-yellow dark:text-yellow-500 mt-1" id="kpi-sim-acertos">0</p></div>
+          <div class="card text-center border-b-4 border-intento-blue dark:border-blue-500"><p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Redação Média</p><p class="text-4xl font-extrabold text-intento-blue dark:text-blue-400 mt-1" id="kpi-sim-red">0</p></div>
+        </div>
+        <div class="grid grid-cols-4 gap-4 mb-6">
+          <div class="card text-center py-3"><p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold">Português</p><p class="text-2xl font-bold text-slate-800 dark:text-white mt-1" id="kpi-lg">0</p></div>
+          <div class="card text-center py-3"><p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold">História</p><p class="text-2xl font-bold text-slate-800 dark:text-white mt-1" id="kpi-ch">0</p></div>
+          <div class="card text-center py-3"><p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold">Geografia</p><p class="text-2xl font-bold text-slate-800 dark:text-white mt-1" id="kpi-cn">0</p></div>
+          <div class="card text-center py-3"><p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold">Matemática</p><p class="text-2xl font-bold text-slate-800 dark:text-white mt-1" id="kpi-mat">0</p></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="card col-span-1"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Tipos de Erros</h3><canvas id="chartErros"></canvas></div>
+          <div class="card col-span-2"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase mb-4">Histórico Temporal</h3><canvas id="chartHistoricoSimulados"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-report" class="fixed inset-0 bg-intento-blue/90 dark:bg-slate-900/95 hidden items-center justify-center z-50 transition-opacity no-print">
+    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-sm mx-4 transform transition-all border dark:border-slate-700">
+      <h3 class="text-xl font-bold text-intento-blue dark:text-white mb-2">Gerar Relatório PDF</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Selecione o formato do documento.</p>
+      <div class="space-y-3">
+        <button onclick="printReport('mensal')" class="w-full py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-intento-blue dark:text-white font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition">📊 Resumo Mensal</button>
+        <button onclick="printReport('ciclo')" class="w-full py-3 bg-intento-blue dark:bg-blue-600 text-intento-yellow dark:text-white rounded-lg font-bold hover:bg-[#040129] dark:hover:bg-blue-700 transition">🏆 Fechamento de Ciclo</button>
+      </div>
+      <div class="mt-6 text-center"><button onclick="closeReportModal()" class="text-sm text-slate-400 hover:text-slate-600 font-medium">Cancelar</button></div>
+    </div>
+  </div>
+
+  <script>
+    Chart.register(ChartDataLabels); 
+    Chart.defaults.plugins.legend.position = 'bottom';
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.legend.labels.pointStyle = 'rectRounded';
+    Chart.defaults.plugins.legend.labels.padding = 20;
+    Chart.defaults.font.family = "'Ubuntu', sans-serif";
+    Chart.defaults.set('plugins.datalabels', { display: false }); 
+
+    let globalData = {};
+    let alunoNameKey = "Intento_";
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.classList.contains('dark')) { html.classList.remove('dark'); localStorage.theme = 'light'; } 
+      else { html.classList.add('dark'); localStorage.theme = 'dark'; }
+    }
+
+    function mostrarErro(mensagem) {
+      document.getElementById('loader').innerHTML = `
+        <div class="text-center bg-white dark:bg-slate-800 p-12 rounded-xl shadow-xl border border-red-200 dark:border-red-900/50">
+          <h2 class="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">Atenção Necessária</h2>
+          <p class="text-slate-600 dark:text-slate-300 font-medium">${mensagem}</p>
+        </div>`;
+    }
+
+    window.onload = () => {
+      calcularDiasProva();
+      const urlParams = new URLSearchParams(window.location.search);
+      const idDoAluno = urlParams.get('id');
+
+      if (!idDoAluno) {
+        mostrarErro("Acesse utilizando o seu link pessoal de mentorado.");
+        return;
+      }
+
+      // IMPORTANTE: COLE AQUI O MESMO AKfy DO SEU NOVO WORKSPACE
+      const ID_API_MESTRE = "COLE_O_SEU_AKfy..._AQUI_DENTRO"; 
+      const linkDaAPI = `https://script.google.com/macros/s/${ID_API_MESTRE}/exec?id=${idDoAluno}`;
+
+      fetch(linkDaAPI)
+        .then(resposta => resposta.json())
+        .then(dados => {
+          if (dados.erro) {
+            mostrarErro(dados.erro); 
+            return;
+          }
+          try {
+            initApp(dados); 
+          } catch(erroInterno) {
+            mostrarErro("Erro ao montar os gráficos: " + erroInterno.message);
+            console.error(erroInterno);
+          }
+        })
+        .catch(erro => {
+          mostrarErro("Falha de Comunicação com o Servidor. Verifique se o ID da Planilha Mestre está correto no código.");
+          console.error(erro);
+        });
+    };
+
+    function calcularDiasProva() {
+      // Você pode alterar a data alvo do Insper/FGV aqui!
+      const d = new Date('2026-06-01T00:00:00');
+      const diff = Math.ceil((d - new Date()) / (1000 * 60 * 60 * 24));
+      document.getElementById('lbl-dias').innerText = diff > 0 ? diff : 0;
+    }
+
+    function switchTab(tabId) {
+      [1, 2, 3, 4, 5].forEach(id => {
+        document.getElementById(`tab${id}`).className = 'pb-3 tab-inactive transition no-print';
+        document.getElementById(`view${id}`).classList.add('hidden');
+      });
+      document.getElementById(`tab${tabId}`).className = 'pb-3 tab-active transition no-print';
+      document.getElementById(`view${tabId}`).classList.remove('hidden');
+    }
+
+    function openReportModal() { document.getElementById('modal-report').classList.remove('hidden'); document.getElementById('modal-report').classList.add('flex'); }
+    function closeReportModal() { document.getElementById('modal-report').classList.add('hidden'); document.getElementById('modal-report').classList.remove('flex'); }
+    function printCronograma() { window.print(); }
+    function printReport(type) { window.print(); }
+
+    function getBadgeHtml(val) {
+      if (val >= 90) return `<span class="inline-flex items-center gap-1 px-3 py-1 bg-intento-blue dark:bg-blue-900 text-intento-yellow dark:text-yellow-400 text-[10px] uppercase tracking-widest font-bold rounded-full mt-2 shadow-sm">⛰️ Mestre</span>`;
+      if (val >= 80) return `<span class="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 text-[10px] uppercase tracking-widest font-bold rounded-full mt-2">📖 Proficiente</span>`;
+      if (val >= 70) return `<span class="inline-flex items-center gap-1 px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-[10px] uppercase tracking-widest font-bold rounded-full mt-2">🌱 Fundamento</span>`;
+      return '';
+    }
+
+    function getTaskStyle(text) {
+      let t = (text || "").toLowerCase();
+      if (t.includes('codificação') || t.includes('priming')) return { bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'border-blue-200 dark:border-blue-800/50', textTime: 'text-blue-700 dark:text-blue-400', textTitle: 'text-blue-900 dark:text-blue-100' };
+      if (t.includes('revisão')) return { bg: 'bg-emerald-50 dark:bg-emerald-900/20', border: 'border-emerald-200 dark:border-emerald-800/50', textTime: 'text-emerald-700 dark:text-emerald-400', textTitle: 'text-emerald-900 dark:text-emerald-100' };
+      if (t.includes('simulado')) return { bg: 'bg-red-50 dark:bg-red-900/20', border: 'border-red-200 dark:border-red-800/50', textTime: 'text-red-700 dark:text-red-400', textTitle: 'text-red-900 dark:text-red-100' };
+      if (t.includes('atividade física')) return { bg: 'bg-yellow-50 dark:bg-yellow-900/20', border: 'border-yellow-300 dark:border-yellow-800/50', textTime: 'text-yellow-800 dark:text-yellow-400', textTitle: 'text-yellow-900 dark:text-yellow-100' };
+      if (t.includes('trabalho')) return { bg: 'bg-slate-800 dark:bg-slate-700', border: 'border-slate-900 dark:border-slate-600', textTime: 'text-slate-400 dark:text-slate-300', textTitle: 'text-white dark:text-white' };
+      if (t.includes('sono') || t.includes('rotina noturna')) return { bg: 'bg-purple-50 dark:bg-purple-900/20', border: 'border-purple-200 dark:border-purple-800/50', textTime: 'text-purple-700 dark:text-purple-400', textTitle: 'text-purple-900 dark:text-purple-100' };
+      return { bg: 'bg-slate-100 dark:bg-slate-800', border: 'border-slate-300 dark:border-slate-700', textTime: 'text-slate-500 dark:text-slate-400', textTitle: 'text-slate-700 dark:text-slate-200' };
+    }
+
+    function saveTaskStatus(checkbox) { localStorage.setItem(alunoNameKey + checkbox.getAttribute('data-id'), checkbox.checked); }
+
+    function resetCheckboxes() {
+      if(confirm("Zerar as atividades e iniciar uma nova semana?")) {
+        const checkboxes = document.querySelectorAll('.task-checkbox');
+        checkboxes.forEach(chk => { chk.checked = false; localStorage.removeItem(alunoNameKey + chk.getAttribute('data-id')); });
+      }
+    }
+
+    const p = (str) => parseFloat((str || '').toString().replace('%','').replace(',','.')) || 0;
+
+    // Tradutor Dinâmico para Aba 2 (Caso a Planilha Mestre envie os nomes antigos)
+    function translateSubjectName(name) {
+      if(!name) return '';
+      return name.replace('BIO', 'Português').replace('QUI', 'História').replace('FIS', 'Geografia');
+    }
+
+    function renderCards(containerId, dataArray, isFirstWeek) {
+      if(!dataArray || !Array.isArray(dataArray)) return;
+      const container = document.getElementById(containerId);
+      let html = '';
+      const bCol = { 'emerald': 'border-emerald-700 dark:border-emerald-500', 'purple': 'border-purple-700 dark:border-purple-500', 'blue': 'border-blue-700 dark:border-blue-500', 'red': 'border-red-700 dark:border-red-500', 'slate': 'border-slate-300 dark:border-slate-600' };
+      const tCol = { 'emerald': 'text-emerald-800 dark:text-emerald-400', 'purple': 'text-purple-800 dark:text-purple-400', 'blue': 'text-blue-800 dark:text-blue-400', 'red': 'text-red-800 dark:text-red-400', 'slate': 'text-slate-600 dark:text-slate-400' };
+
+      dataArray.forEach(item => {
+        let diff = p(item.curr) - p(item.prev);
+        let valCol = "text-slate-800 dark:text-white"; let arr = "";
+        if (!isFirstWeek && diff !== 0) {
+          let isPos = diff > 0;
+          valCol = (item.invertColors ? !isPos : isPos) ? "text-emerald-700 dark:text-emerald-400" : "text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/30 px-1 rounded";
+          arr = isPos ? "▲" : "▼";
+        }
+        let disp = isFirstWeek ? (item.curr || '0') : `<span class="text-sm text-slate-400 font-normal mr-1">${item.prev || '0'} ➔</span> ${item.curr || '0'} <span class="text-xs ml-1">${arr}</span>`;
+        let tm = item.theme || 'slate';
+        let translatedName = translateSubjectName(item.name); // Traduz automaticamente
+        
+        html += `<div class="card py-3 px-4 flex flex-col justify-center border-l-4 ${bCol[tm]}"><span class="text-xs font-bold ${tCol[tm]} uppercase mb-1">${translatedName}</span><span class="text-2xl font-bold ${valCol}">${disp}</span></div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    function initApp(dados) {
+      globalData = dados;
+      
+      const nomeAluno = dados?.aluno?.nome || 'Aluno Intento';
+      alunoNameKey = "Intento_FGV_" + nomeAluno.replace(/\s+/g, '_') + "_";
+      
+      document.title = nomeAluno + " | Mentoria Intento";
+      document.getElementById('print-nome').innerText = nomeAluno;
+      document.getElementById('lbl-nome').innerText = nomeAluno;
+      
+      document.getElementById('loader').classList.add('hidden');
+      document.getElementById('main-content').classList.remove('hidden');
+
+      // ABA 1
+      const snapshot = dados?.snapshot || {dom:[0,0,0,0], prog:[0,0,0,0]};
+      const domArr = snapshot.dom || [0,0,0,0];
+      document.getElementById('dom-bio').innerText = domArr[0] + "%";
+      document.getElementById('badge-bio').innerHTML = getBadgeHtml(domArr[0]);
+      document.getElementById('dom-qui').innerText = domArr[1] + "%";
+      document.getElementById('badge-qui').innerHTML = getBadgeHtml(domArr[1]);
+      document.getElementById('dom-fis').innerText = domArr[2] + "%";
+      document.getElementById('badge-fis').innerHTML = getBadgeHtml(domArr[2]);
+      document.getElementById('dom-mat').innerText = domArr[3] + "%";
+      document.getElementById('badge-mat').innerHTML = getBadgeHtml(domArr[3]);
+
+      const mensal = dados?.mensal || {labels:[], meta:[], horas:[], domTot:[], progTot:[], estresse:[], ansiedade:[], motivacao:[], sono:[]};
+      new Chart(document.getElementById('chartHorasMeta'), { data: { labels: mensal.labels || [], datasets: [ { type: 'line', label: 'Meta', data: mensal.meta || [], borderColor: '#64748b', borderWidth: 3, tension: 0.1, yAxisID: 'y', pointBackgroundColor: '#FFFFFF', pointRadius: 4 }, { type: 'bar', label: 'Horas', data: mensal.horas || [], backgroundColor: '#D4B726', borderRadius: 4, yAxisID: 'y' } ] }, options: { scales: { y: { beginAtZero: true, grid: { color: 'rgba(150, 150, 150, 0.1)' } }, x: { grid: { display: false } } }, plugins: { datalabels: { display: true, align: 'top', font: { weight: 'bold' } } } } });
+      new Chart(document.getElementById('chartEvolucaoGeral'), { data: { labels: mensal.labels || [], datasets: [ { type: 'line', label: 'Domínio', data: mensal.domTot || [], borderColor: '#3b82f6', backgroundColor: '#3b82f6', tension: 0.3, yAxisID: 'y', pointBackgroundColor: '#FFFFFF', pointRadius: 4 }, { type: 'bar', label: 'Progresso', data: mensal.progTot || [], backgroundColor: 'rgba(100, 116, 139, 0.2)', yAxisID: 'y1', borderRadius: 4 } ] }, options: { scales: { y: { type: 'linear', position: 'left', min: 0, max: 100, grid: { color: 'rgba(150, 150, 150, 0.1)' } }, y1: { type: 'linear', position: 'right', min: 0, grid: { drawOnChartArea: false } }, x: { grid: { display: false } } }, plugins: { datalabels: { display: true, align: 'top', font: { weight: 'bold' } } } } });
+      new Chart(document.getElementById('chartEstiloVida'), { type: 'line', data: { labels: mensal.labels || [], datasets: [ { label: 'Estresse', data: mensal.estresse || [], borderColor: '#ef4444', backgroundColor: '#ef4444', tension: 0.3, pointBackgroundColor: '#FFFFFF', pointRadius: 4 }, { label: 'Ansiedade', data: mensal.ansiedade || [], borderColor: '#f97316', backgroundColor: '#f97316', tension: 0.3, pointBackgroundColor: '#FFFFFF', pointRadius: 4 }, { label: 'Motivação', data: mensal.motivacao || [], borderColor: '#3b82f6', backgroundColor: '#3b82f6', tension: 0.3, pointBackgroundColor: '#FFFFFF', pointRadius: 4 }, { label: 'Sono', data: mensal.sono || [], borderColor: '#8b5cf6', backgroundColor: '#8b5cf6', tension: 0.3, pointBackgroundColor: '#FFFFFF', pointRadius: 4 } ] }, options: { scales: { y: { min: 0, max: 5, ticks: { stepSize: 1 }, grid: { color: 'rgba(150, 150, 150, 0.1)' } }, x: { grid: { display: false } } } } });
+      
+      // MUDANÇA: Gráfico agora exibe as novas matérias
+      new Chart(document.getElementById('chartProgressoArea'), { type: 'bar', data: { labels: ['Português', 'História', 'Geografia', 'Matemática'], datasets: [{ label: 'Progresso (%)', data: snapshot.prog || [0,0,0,0], backgroundColor: ['#10b981', '#a855f7', '#3b82f6', '#ef4444'], borderRadius: 4 }] }, options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'right', font: { weight: 'bold' } } }, scales: { x: { beginAtZero: true, max: 100, grid: { color: 'rgba(150, 150, 150, 0.1)' } }, y: { grid: { display: false } } } } });
+
+      // ABA 2
+      const semanal = dados?.semanal || {};
+      const isFirst = semanal.isFirstWeek || false;
+      if (isFirst) document.getElementById('msg-primeira-semana').classList.remove('hidden');
+      
+      let heatHtml = '';
+      const streak = semanal.streak || [];
+      streak.forEach(hit => { heatHtml += `<div class="w-7 h-7 rounded ${hit ? 'bg-intento-blue dark:bg-blue-600' : 'bg-slate-200 dark:bg-slate-700'} shadow-sm"></div>`; });
+      for(let i=0; i<3; i++) { heatHtml += `<div class="w-7 h-7 rounded border-2 border-slate-200 dark:border-slate-700 bg-transparent"></div>`; }
+      document.getElementById('heatmap-container').innerHTML = heatHtml;
+
+      renderCards('grid-geral', semanal.geral || [], isFirst);
+      renderCards('grid-estilo', semanal.estilo || [], isFirst);
+      const desemp = semanal.desempenho || [];
+      renderCards('col-bio', desemp.slice(0, 2), isFirst);
+      renderCards('col-qui', desemp.slice(2, 4), isFirst);
+      renderCards('col-fis', desemp.slice(4, 6), isFirst);
+      renderCards('col-mat', desemp.slice(6, 8), isFirst);
+
+      // ABA 3
+      const plano = dados?.plano || { data: '--', meta: '--', acao: [] };
+      document.getElementById('plano-data').innerText = plano.data || '--';
+      document.getElementById('plano-meta').innerText = plano.meta || '--';
+      let acoesHtml = '<ol class="list-decimal pl-6 space-y-4 marker:text-intento-blue dark:marker:text-blue-400 marker:font-bold">';
+      (plano.acao || []).forEach(acao => { acoesHtml += `<li class="whitespace-pre-wrap text-slate-700 dark:text-slate-300">${acao}</li>`; });
+      acoesHtml += '</ol>';
+      document.getElementById('plano-acao').innerHTML = acoesHtml;
+
+      // ABA 4
+      let kContainer = document.getElementById('kanban-container');
+      let kHtml = '';
+      const rotina = dados?.rotina || {};
+      const rotinaDias = dados?.rotinaDias || [];
+      rotinaDias.forEach((dia, dayIndex) => {
+        let atividades = rotina[dia] || [];
+        let bHtml = '';
+        if(atividades.length > 0) {
+          atividades.forEach((att, attIndex) => {
+            let s = getTaskStyle(att.atividade);
+            let tId = `t_${dayIndex}_${attIndex}`;
+            let chk = localStorage.getItem(alunoNameKey + tId) === 'true' ? 'checked' : '';
+            bHtml += `<label class="${s.bg} border ${s.border} p-3 rounded-lg mb-2 shadow-sm transition hover:shadow-md cursor-pointer flex items-start gap-3 print-crono-task"><input type="checkbox" class="mt-1 task-checkbox w-4 h-4 text-intento-blue rounded border-slate-300 dark:border-slate-600 dark:bg-slate-700 no-print" data-id="${tId}" onchange="saveTaskStatus(this)" ${chk}><div class="flex-1"><p class="text-xs ${s.textTime} font-bold mb-1 task-time print-crono-text">${att.hora || ''}</p><p class="text-sm ${s.textTitle} font-medium leading-tight task-title print-crono-text">${att.atividade || ''}</p></div></label>`;
+          });
+        } else { bHtml = `<p class="text-sm text-slate-400 dark:text-slate-500 italic mt-4 text-center">Dia Livre</p>`; }
+        kHtml += `<div class="snap-center min-w-[270px] max-w-[270px] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 flex flex-col shadow-sm print-crono-day"><h3 class="text-center font-bold text-intento-blue dark:text-blue-400 uppercase mb-4 pb-2 tracking-wide">${dia}</h3><div class="flex-1 overflow-y-auto pr-2 scroll-hide">${bHtml}</div></div>`;
+      });
+      kContainer.innerHTML = kHtml;
+
+      // ABA 5
+      const simKpi = dados?.sim?.kpi || { realizados:0, medAcertos:0, medRedacao:0, medLG:0, medCH:0, medCN:0, medMAT:0, erros:{atencao:0, inter:0, rec:0, lac:0} };
+      document.getElementById('kpi-sim-total').innerText = simKpi.realizados || 0;
+      document.getElementById('kpi-sim-acertos').innerText = simKpi.medAcertos || 0;
+      document.getElementById('kpi-sim-red').innerText = simKpi.medRedacao || 0;
+      document.getElementById('kpi-lg').innerText = simKpi.medLG || 0;
+      document.getElementById('kpi-ch').innerText = simKpi.medCH || 0;
+      document.getElementById('kpi-cn').innerText = simKpi.medCN || 0;
+      document.getElementById('kpi-mat').innerText = simKpi.medMAT || 0;
+      
+      const erros = simKpi.erros || {atencao:0, inter:0, rec:0, lac:0};
+      new Chart(document.getElementById('chartErros'), { type: 'doughnut', data: { labels: ['Atenção', 'Interpretação', 'Recordação', 'Lacuna'], datasets: [{ data: [erros.atencao, erros.inter, erros.rec, erros.lac], backgroundColor: ['#D4B726', '#3b82f6', '#8b5cf6', '#ef4444'], borderWidth: 0 }] }, options: { cutout: '65%', plugins: { datalabels: { color: '#fff', font: { weight: 'bold' }, display: true } } } });
+      
+      const hist = dados?.sim?.hist || {labels:[], lg:[], ch:[], cn:[], mat:[]};
+      // MUDANÇA: Gráfico temporal agora com as legendas corretas para FGV/Insper (POR, HIS, GEO, MAT)
+      new Chart(document.getElementById('chartHistoricoSimulados'), { type: 'line', data: { labels: hist.labels || [], datasets: [ { label: 'Português', data: hist.lg || [], borderColor: '#0ea5e9', backgroundColor: '#0ea5e9', tension: 0.2, pointBackgroundColor: '#FFFFFF', pointRadius: 4 }, { label: 'História', data: hist.ch || [], borderColor: '#f97316', backgroundColor: '#f97316', tension: 0.2, pointBackgroundColor: '#FFFFFF', pointRadius: 4 }, { label: 'Geografia', data: hist.cn || [], borderColor: '#10b981', backgroundColor: '#10b981', tension: 0.2, pointBackgroundColor: '#FFFFFF', pointRadius: 4 }, { label: 'Matemática', data: hist.mat || [], borderColor: '#ef4444', backgroundColor: '#ef4444', tension: 0.2, pointBackgroundColor: '#FFFFFF', pointRadius: 4 } ] }, options: { scales: { y: { grid: { color: 'rgba(150, 150, 150, 0.1)' } }, x: { grid: { display: false } } } } });
+    }
+  </script>
+</body>
+</html>
